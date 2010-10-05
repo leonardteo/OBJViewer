@@ -225,7 +225,7 @@ void OBJModel::draw()
 	//Load texture
 	glBindTexture(GL_TEXTURE_2D, this->texture);
 
-	//For each face, draw a quad
+	//For each face, draw a Triangle
 	glBegin(GL_TRIANGLES);
 	for (int face = 0; face < this->numFaces; face++)
 	{
