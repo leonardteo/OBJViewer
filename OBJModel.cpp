@@ -3,7 +3,7 @@
 using namespace std;
 
 //Constructor
-OBJModel::OBJModel(char* fileName)
+OBJModel::OBJModel(const char* fileName)
 {
 	this->init();
 	this->load(fileName);
@@ -35,7 +35,7 @@ void OBJModel::init()
 	this->uvIndex = NULL;
 }
 
-void OBJModel::load(char* fileName)
+void OBJModel::load(const char* fileName)
 {
 	char buffer[255];
 
@@ -284,7 +284,7 @@ void OBJModel::draw()
 /***
 Load Texture
 ***/
-void OBJModel::loadTexture(char* fileName)
+void OBJModel::loadTexture(const char* fileName)
 {
 	this->image = new MyBitmap(fileName);
 	if (!image->loaded){

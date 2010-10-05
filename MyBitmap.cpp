@@ -16,7 +16,7 @@ MyBitmap::MyBitmap(){
 }
 
 //constructor loads the bitmap when it is created
-MyBitmap::MyBitmap(char *file){
+MyBitmap::MyBitmap(const char *file){
     reset();
     loadBMP(file);
 }
@@ -33,9 +33,9 @@ MyBitmap::~MyBitmap(){
 
 //load a bitmap from a file and represent it correctly
 //in memory
-bool MyBitmap::loadBMP(char *file) {
+bool MyBitmap::loadBMP(const char *file) {
     FILE *in;                  //file stream for reading
-    char *tempData;       //temp storage for image data
+    char *tempData;			//temp storage for image data
     int numColours;            //total available colours
 
     //bitmap is not loaded yet

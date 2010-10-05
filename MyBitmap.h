@@ -64,9 +64,9 @@ public:
 
     //methods
     MyBitmap(void);
-    MyBitmap(char *);
+    MyBitmap(const char *);
     ~MyBitmap();
-    bool loadBMP(char *);
+    bool loadBMP(const char *);
 
 private:
     //variables

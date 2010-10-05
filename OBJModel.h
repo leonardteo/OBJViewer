@@ -21,7 +21,15 @@ To DO:
 #include <fstream>
 #include <stdio.h>
 #include <string>
-#include <GL\glut.h>
+
+#ifdef OSX
+	#include <OpenGL/gl.h>
+	#include <OpenGL/glu.h>
+	#include <GLUT/GLUT.h>
+#else
+	#include <GL/glut.h>
+#endif
+
 #include "Vector3.h"
 #include "MyBitmap.h"
 
@@ -35,13 +43,13 @@ class OBJModel
 {
 public:
 	//Constructor
-	OBJModel(char* fileName);
+	OBJModel(const char* fileName);
 
 	//Destructor
 	~OBJModel(void);
 
 	//Load Texture
-	void loadTexture(char* fileName);
+	void loadTexture(const char* fileName);
 
 	//Draw the polygons using OpenGL calls
 	void draw();
@@ -74,7 +82,7 @@ private:
 	void init();
 
 	//Load a model file
-	void load(char* fileName);
+	void load(const char* fileName);
 
 };
 

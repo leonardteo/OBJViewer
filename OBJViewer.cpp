@@ -3,10 +3,21 @@ OBJ Viewer
 **/
 
 #include <iostream>
-#include <GL/glut.h>
+#include <string>
+
+#ifdef OSX
+	#include <OpenGL/gl.h>
+	#include <OpenGL/glu.h>
+	#include <GLUT/GLUT.h>
+#else
+	#include <GL/glut.h>
+#endif
+
+
 #include "PolarCamera.h"
 #include "OBJModel.h"
 #include "MyBitmap.h"
+
 
 using namespace std;
 
@@ -541,7 +552,7 @@ static void lighting()
 	glLightfv(GL_LIGHT0, GL_SPECULAR, white_light);
 
 	//Setup Ambient Light
-	GLfloat lmodel_ambient[] = {(GLfloat)0.2, (GLfloat)0.2, (GLfloat)0.2, (GLfloat)1.0};
+	//GLfloat lmodel_ambient[] = {(GLfloat)0.2, (GLfloat)0.2, (GLfloat)0.2, (GLfloat)1.0};
 
 	//Turn on lighting
 	glEnable(GL_LIGHTING);
@@ -577,14 +588,14 @@ Clear out the screen
 static void init()
 {
 	//Load model
-	m1abrams = new OBJModel("C:\\mayaprojects\\GameEngineTests\\scenes\\m1abrams.obj");
-	m1abrams->loadTexture("C:\\mayaprojects\\GameEngineTests\\sourceimages\\M1_ABRAM.bmp");
+	m1abrams = new OBJModel("models/m1abrams.obj");
+	m1abrams->loadTexture("textures/M1_ABRAM.bmp");
 
-	humveehardtop = new OBJModel("C:\\mayaprojects\\GameEngineTests\\scenes\\humveehardtop.obj");
-	humveehardtop->loadTexture("C:\\mayaprojects\\GameEngineTests\\sourceimages\\humveehardtop.bmp");
+	humveehardtop = new OBJModel("models/humveehardtop.obj");
+	humveehardtop->loadTexture("textures/humveehardtop.bmp");
 
-	uhtiger = new OBJModel("C:\\mayaprojects\\GameEngineTests\\scenes\\uhtiger.obj");
-	uhtiger->loadTexture("C:\\mayaprojects\\GameEngineTests\\sourceimages\\uhtiger.bmp");
+	uhtiger = new OBJModel("/Users/leonardteo/Documents/UniProjects/OBJViewer/models/uhtiger.obj");
+	uhtiger->loadTexture("/Users/leonardteo/Documents/UniProjects/OBJViewer/textures/uhtiger.bmp");
 
 	//objmodel = new OBJModel("C:\\mayaprojects\\GameEngineTests\\scenes\\quakeplasma.obj");
 	//objmodel = new OBJModel("C:\\mayaprojects\\GameEngineTests\\scenes\\uhtiger.obj");
