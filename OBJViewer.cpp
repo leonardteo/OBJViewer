@@ -594,8 +594,8 @@ static void init()
 	humveehardtop = new OBJModel("models/humveehardtop.obj");
 	humveehardtop->loadTexture("textures/humveehardtop.bmp");
 
-	uhtiger = new OBJModel("/Users/leonardteo/Documents/UniProjects/OBJViewer/models/uhtiger.obj");
-	uhtiger->loadTexture("/Users/leonardteo/Documents/UniProjects/OBJViewer/textures/uhtiger.bmp");
+	uhtiger = new OBJModel("models/uhtiger.obj");
+	uhtiger->loadTexture("textures/uhtiger.bmp");
 
 	//objmodel = new OBJModel("C:\\mayaprojects\\GameEngineTests\\scenes\\quakeplasma.obj");
 	//objmodel = new OBJModel("C:\\mayaprojects\\GameEngineTests\\scenes\\uhtiger.obj");
