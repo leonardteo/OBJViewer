@@ -1,0 +1,249 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8A6E518E125B9A9000306EE3 /* MyBitmap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A6E5182125B9A9000306EE3 /* MyBitmap.cpp */; };
+		8A6E518F125B9A9000306EE3 /* OBJModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A6E5184125B9A9000306EE3 /* OBJModel.cpp */; };
+		8A6E5190125B9A9000306EE3 /* PolarCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A6E5186125B9A9000306EE3 /* PolarCamera.cpp */; };
+		8A6E5193125B9A9000306EE3 /* Vector3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A6E518C125B9A9000306EE3 /* Vector3.cpp */; };
+		8A6E5197125B9AC500306EE3 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A6E5196125B9AC500306EE3 /* OpenGL.framework */; };
+		8A6E519B125B9AD600306EE3 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A6E519A125B9AD600306EE3 /* GLUT.framework */; };
+		8A6E51A3125B9C4600306EE3 /* OBJViewer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A6E51A2125B9C4600306EE3 /* OBJViewer.cpp */; };
+		8A6E5281125BDF4900306EE3 /* Node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A6E5280125BDF4900306EE3 /* Node.cpp */; };
+		8A6E52BD125BF6C400306EE3 /* PolyMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A6E52BC125BF6C400306EE3 /* PolyMesh.cpp */; };
+		8DD76F6A0486A84900D96B5E /* OBJViewer.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = C6859E8B029090EE04C91782 /* OBJViewer.1 */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		8DD76F690486A84900D96B5E /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 8;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+				8DD76F6A0486A84900D96B5E /* OBJViewer.1 in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		8A6E5182125B9A9000306EE3 /* MyBitmap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MyBitmap.cpp; sourceTree = "<group>"; };
+		8A6E5183125B9A9000306EE3 /* MyBitmap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyBitmap.h; sourceTree = "<group>"; };
+		8A6E5184125B9A9000306EE3 /* OBJModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OBJModel.cpp; sourceTree = "<group>"; };
+		8A6E5185125B9A9000306EE3 /* OBJModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBJModel.h; sourceTree = "<group>"; };
+		8A6E5186125B9A9000306EE3 /* PolarCamera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PolarCamera.cpp; sourceTree = "<group>"; };
+		8A6E5187125B9A9000306EE3 /* PolarCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolarCamera.h; sourceTree = "<group>"; };
+		8A6E518C125B9A9000306EE3 /* Vector3.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Vector3.cpp; sourceTree = "<group>"; };
+		8A6E518D125B9A9000306EE3 /* Vector3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vector3.h; sourceTree = "<group>"; };
+		8A6E5196125B9AC500306EE3 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		8A6E519A125B9AD600306EE3 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		8A6E51A2125B9C4600306EE3 /* OBJViewer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OBJViewer.cpp; sourceTree = "<group>"; };
+		8A6E527F125BDF4900306EE3 /* Node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Node.h; sourceTree = "<group>"; };
+		8A6E5280125BDF4900306EE3 /* Node.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Node.cpp; sourceTree = "<group>"; };
+		8A6E52BB125BF6C400306EE3 /* PolyMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolyMesh.h; sourceTree = "<group>"; };
+		8A6E52BC125BF6C400306EE3 /* PolyMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PolyMesh.cpp; sourceTree = "<group>"; };
+		8DD76F6C0486A84900D96B5E /* OBJViewer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = OBJViewer; sourceTree = BUILT_PRODUCTS_DIR; };
+		C6859E8B029090EE04C91782 /* OBJViewer.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = OBJViewer.1; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8DD76F660486A84900D96B5E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8A6E5197125B9AC500306EE3 /* OpenGL.framework in Frameworks */,
+				8A6E519B125B9AD600306EE3 /* GLUT.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		08FB7794FE84155DC02AAC07 /* OBJViewer */ = {
+			isa = PBXGroup;
+			children = (
+				08FB7795FE84155DC02AAC07 /* Source */,
+				C6859E8C029090F304C91782 /* Documentation */,
+				1AB674ADFE9D54B511CA2CBB /* Products */,
+				8A6E5196125B9AC500306EE3 /* OpenGL.framework */,
+				8A6E519A125B9AD600306EE3 /* GLUT.framework */,
+			);
+			name = OBJViewer;
+			sourceTree = "<group>";
+		};
+		08FB7795FE84155DC02AAC07 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				8A6E5182125B9A9000306EE3 /* MyBitmap.cpp */,
+				8A6E5183125B9A9000306EE3 /* MyBitmap.h */,
+				8A6E5185125B9A9000306EE3 /* OBJModel.h */,
+				8A6E5184125B9A9000306EE3 /* OBJModel.cpp */,
+				8A6E51A2125B9C4600306EE3 /* OBJViewer.cpp */,
+				8A6E5186125B9A9000306EE3 /* PolarCamera.cpp */,
+				8A6E5187125B9A9000306EE3 /* PolarCamera.h */,
+				8A6E518C125B9A9000306EE3 /* Vector3.cpp */,
+				8A6E518D125B9A9000306EE3 /* Vector3.h */,
+				8A6E527F125BDF4900306EE3 /* Node.h */,
+				8A6E5280125BDF4900306EE3 /* Node.cpp */,
+				8A6E52BB125BF6C400306EE3 /* PolyMesh.h */,
+				8A6E52BC125BF6C400306EE3 /* PolyMesh.cpp */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		1AB674ADFE9D54B511CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8DD76F6C0486A84900D96B5E /* OBJViewer */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C6859E8C029090F304C91782 /* Documentation */ = {
+			isa = PBXGroup;
+			children = (
+				C6859E8B029090EE04C91782 /* OBJViewer.1 */,
+			);
+			name = Documentation;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8DD76F620486A84900D96B5E /* OBJViewer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1DEB923108733DC60010E9CD /* Build configuration list for PBXNativeTarget "OBJViewer" */;
+			buildPhases = (
+				8DD76F640486A84900D96B5E /* Sources */,
+				8DD76F660486A84900D96B5E /* Frameworks */,
+				8DD76F690486A84900D96B5E /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OBJViewer;
+			productInstallPath = "$(HOME)/bin";
+			productName = OBJViewer;
+			productReference = 8DD76F6C0486A84900D96B5E /* OBJViewer */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		08FB7793FE84155DC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB923508733DC60010E9CD /* Build configuration list for PBXProject "OBJViewer" */;
+			compatibilityVersion = "Xcode 3.1";
+			hasScannedForEncodings = 1;
+			mainGroup = 08FB7794FE84155DC02AAC07 /* OBJViewer */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8DD76F620486A84900D96B5E /* OBJViewer */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8DD76F640486A84900D96B5E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8A6E518E125B9A9000306EE3 /* MyBitmap.cpp in Sources */,
+				8A6E518F125B9A9000306EE3 /* OBJModel.cpp in Sources */,
+				8A6E5190125B9A9000306EE3 /* PolarCamera.cpp in Sources */,
+				8A6E5193125B9A9000306EE3 /* Vector3.cpp in Sources */,
+				8A6E51A3125B9C4600306EE3 /* OBJViewer.cpp in Sources */,
+				8A6E5281125BDF4900306EE3 /* Node.cpp in Sources */,
+				8A6E52BD125BF6C400306EE3 /* PolyMesh.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1DEB923208733DC60010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INSTALL_PATH = /usr/local/bin;
+				PRODUCT_NAME = OBJViewer;
+			};
+			name = Debug;
+		};
+		1DEB923308733DC60010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = /usr/local/bin;
+				PRODUCT_NAME = OBJViewer;
+			};
+			name = Release;
+		};
+		1DEB923608733DC60010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = "OSX=1";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PREBINDING = NO;
+				SDKROOT = macosx10.6;
+			};
+			name = Debug;
+		};
+		1DEB923708733DC60010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = "OSX=1";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = macosx10.6;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DEB923108733DC60010E9CD /* Build configuration list for PBXNativeTarget "OBJViewer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB923208733DC60010E9CD /* Debug */,
+				1DEB923308733DC60010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1DEB923508733DC60010E9CD /* Build configuration list for PBXProject "OBJViewer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB923608733DC60010E9CD /* Debug */,
+				1DEB923708733DC60010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 08FB7793FE84155DC02AAC07 /* Project object */;
+}

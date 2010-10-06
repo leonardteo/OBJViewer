@@ -2,13 +2,10 @@
 My attempt at an OBJ parser
 Leonard Teo
 
-25 September 2010
-
 Done:
 Only supports triangles - remember to triangulate all models
 
 To DO:
-- UV mapping
 - Generate normals if a model doesn't have them
 - Handle groups and materials
 
@@ -32,6 +29,10 @@ To DO:
 
 #include "Vector3.h"
 #include "MyBitmap.h"
+#include "Node.h"
+#include <vector>
+
+using namespace std;
 
 struct UV 
 {
@@ -39,7 +40,7 @@ struct UV
 	float v;
 };
 
-class OBJModel
+class OBJModel: public Node
 {
 public:
 	//Constructor
@@ -53,6 +54,9 @@ public:
 
 	//Draw the polygons using OpenGL calls
 	void draw();
+	
+	//Scene graph rendering call
+	void render();
 
 	//Generate normals - TO DO
 	void generateNormals();

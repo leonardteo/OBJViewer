@@ -17,7 +17,7 @@ OBJ Viewer
 #include "PolarCamera.h"
 #include "OBJModel.h"
 #include "MyBitmap.h"
-
+#include "Node.h"
 
 using namespace std;
 
@@ -81,6 +81,9 @@ OBJModel* uhtiger;
 MyBitmap* texture;
 static GLuint texName;
 
+//Scene Graph
+Node* rootNode;
+
 /**
 Draw a 24x24 grid
 **/
@@ -128,7 +131,11 @@ static void grid(int scale = 1)
 
 static void draw_models()
 {
+	//Draw using scene graph
+	rootNode->render();
+	
 	//Draw all three models (let's be awesome)
+	/*
 	glPushMatrix();
 		glTranslatef(-15, 0, 0);
 		m1abrams->draw();
@@ -140,6 +147,7 @@ static void draw_models()
 		glTranslatef(15,0,0);
 		humveehardtop->draw();
 	glPopMatrix();
+	 */
 
 	//Switch model
 	/*
@@ -587,16 +595,24 @@ Clear out the screen
 **/
 static void init()
 {
-	//Load model
+	
+	//Load models
 	m1abrams = new OBJModel("models/m1abrams.obj");
 	m1abrams->loadTexture("textures/M1_ABRAM.bmp");
 
 	humveehardtop = new OBJModel("models/humveehardtop.obj");
 	humveehardtop->loadTexture("textures/humveehardtop.bmp");
+	humveehardtop->translate->x = -15.0f;
 
 	uhtiger = new OBJModel("models/uhtiger.obj");
 	uhtiger->loadTexture("textures/uhtiger.bmp");
-
+	uhtiger->translate->x = 15.0f;
+	
+	//Scene Graph
+	rootNode = m1abrams;
+	m1abrams->addChild(humveehardtop);
+	m1abrams->addChild(uhtiger);
+	
 	//objmodel = new OBJModel("C:\\mayaprojects\\GameEngineTests\\scenes\\quakeplasma.obj");
 	//objmodel = new OBJModel("C:\\mayaprojects\\GameEngineTests\\scenes\\uhtiger.obj");
 	//objmodel = new OBJModel("C:\\mayaprojects\\GameEngineTests\\scenes\\humveehardtop.obj");

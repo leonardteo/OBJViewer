@@ -33,6 +33,8 @@ void OBJModel::init()
 	this->index = NULL;
 	this->normals = NULL;
 	this->uvIndex = NULL;
+	
+	this->type = POLYMESH;	
 }
 
 void OBJModel::load(const char* fileName)
@@ -216,6 +218,20 @@ void OBJModel::load(const char* fileName)
 
 
 }
+
+
+void OBJModel::render()
+{
+	
+	
+	//Draw this
+	glPushMatrix();
+		glTranslatef((GLfloat)this->translate->x, (GLfloat)this->translate->y, (GLfloat)this->translate->z);
+		this->draw();
+	glPopMatrix();
+	
+}
+
 
 /**
 Drawing routine
