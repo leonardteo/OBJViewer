@@ -11,8 +11,7 @@
 //Constructor
 Node::Node()
 {
-	//this->children = new vector<Node*>;
-	
+	this->children = new vector<Node*>;
 	this->scale = new Vector3();
 	this->rotate = new Vector3();
 	this->translate = new Vector3();
@@ -21,7 +20,7 @@ Node::Node()
 //Destructor
 Node::~Node()
 {
-	//delete this->children;
+	delete this->children;
 	delete this->scale;
 	delete this->rotate;
 	delete this->translate;
@@ -32,3 +31,7 @@ void Node::addChild(Node* child)
 {
 	this->children->push_back(child);
 }
+
+void Node::render()
+{
+};

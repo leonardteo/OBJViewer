@@ -597,21 +597,24 @@ static void init()
 {
 	
 	//Load models
+	uhtiger = new OBJModel("models/uhtiger.obj");
+	uhtiger->loadTexture("textures/uhtiger.bmp");
+	uhtiger->translate->z = 5.0f;
+
 	m1abrams = new OBJModel("models/m1abrams.obj");
 	m1abrams->loadTexture("textures/M1_ABRAM.bmp");
+	m1abrams->translate->z = -5.0f;
+	m1abrams->translate->x = -15.0f;
 
 	humveehardtop = new OBJModel("models/humveehardtop.obj");
 	humveehardtop->loadTexture("textures/humveehardtop.bmp");
-	humveehardtop->translate->x = -15.0f;
-
-	uhtiger = new OBJModel("models/uhtiger.obj");
-	uhtiger->loadTexture("textures/uhtiger.bmp");
-	uhtiger->translate->x = 15.0f;
+	humveehardtop->translate->z = -5.0f;
+	humveehardtop->translate->x = 15.0f;
 	
 	//Scene Graph
-	rootNode = m1abrams;
-	m1abrams->addChild(humveehardtop);
-	m1abrams->addChild(uhtiger);
+	rootNode = uhtiger;
+	rootNode->addChild(humveehardtop);
+	rootNode->addChild(m1abrams);
 	
 	//objmodel = new OBJModel("C:\\mayaprojects\\GameEngineTests\\scenes\\quakeplasma.obj");
 	//objmodel = new OBJModel("C:\\mayaprojects\\GameEngineTests\\scenes\\uhtiger.obj");

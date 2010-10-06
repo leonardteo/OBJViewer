@@ -222,7 +222,10 @@ void OBJModel::load(const char* fileName)
 
 void OBJModel::render()
 {
-	
+	for (int i=0; i<this->children->size(); i++)
+	{
+		this->children->at(i)->render();
+	}
 	
 	//Draw this
 	glPushMatrix();
