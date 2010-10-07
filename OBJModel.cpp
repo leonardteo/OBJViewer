@@ -12,9 +12,25 @@ OBJModel::OBJModel(const char* fileName)
 //Free memory
 OBJModel::~OBJModel(void)
 {
+	//Free all vertices and normals
+	for (int i=0; i<this->numVertices; i++)
+	{
+		delete this->vertices[i];
+	}
 	delete this->vertices;
+	
+	for (int i=0; i<this->numNormals; i++)
+	{
+		delete this->normals[i];
+	}
 	delete this->normals;
+	
+	for (int i=0; i<this->numUVs; i++)
+	{
+		delete this->uvs[i];
+	}
 	delete this->uvs;
+	
 	delete this->index;
 	delete this->normalsIndex;
 	delete this->uvIndex;
@@ -35,6 +51,7 @@ void OBJModel::init()
 	this->uvIndex = NULL;
 	
 	this->type = POLYMESH;	
+	this->hasTexture = false;
 }
 
 void OBJModel::load(const char* fileName)
@@ -242,8 +259,11 @@ Drawing routine
 void OBJModel::draw()
 {
 	//Load texture
-	glBindTexture(GL_TEXTURE_2D, this->texture);
-
+	if (this->hasTexture)
+	{
+		glBindTexture(GL_TEXTURE_2D, this->texture);
+	}
+		
 	//For each face, draw a Triangle
 	glBegin(GL_TRIANGLES);
 	for (int face = 0; face < this->numFaces; face++)
@@ -318,7 +338,10 @@ void OBJModel::loadTexture(const char* fileName)
 	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
 	
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, this->image->width, this->image->height, 0, GL_RGB, GL_UNSIGNED_BYTE, this->image->data);
-	glEnable( GL_TEXTURE_2D );
+	this->hasTexture = true;
+	
+	glEnable(GL_TEXTURE_2D);
+	
 
 	delete image;
 }

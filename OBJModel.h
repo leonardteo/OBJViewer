@@ -69,6 +69,8 @@ private:
 	int numFaces;
 	int numUVs;
 	int numNormals;
+	
+	bool hasTexture;
 
 	//Data
 	Vector3** vertices;

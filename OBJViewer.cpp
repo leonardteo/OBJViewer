@@ -633,7 +633,7 @@ static void init()
 	lighting();
 
 	//Anti-Aliasing
-	
+	/*
 	glEnable (GL_LINE_SMOOTH);
 	glEnable(GL_POLYGON_SMOOTH);
 
@@ -642,7 +642,7 @@ static void init()
 	glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
 	glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
 	glLineWidth (1);
-	
+	*/
 
 	//Backface culling
 	glEnable(GL_CULL_FACE);
@@ -654,7 +654,8 @@ Main function
 **/
 int main(int argc, char** argv)
 {
-
+	
+	//Get current directory
 	cout << "Firing up OBJViewer" << endl;
 	cout << "===================" << endl << endl;
 	
@@ -671,10 +672,6 @@ int main(int argc, char** argv)
 	cout << "+ or z: Zoom in" << endl;
 	cout << "- or Z(shift-z): Zoom out" << endl;
 	cout << "c: Reset view" << endl << endl;
-
-	cout << "Deluxe Light Cycle Controls " << endl;
-	cout << "left/right arrow keys: Turn front wheels" << endl;
-	cout << "[ and ]: Open/close canopy" << endl << endl;
 
 	cout << "Escape: Quit" << endl;
 

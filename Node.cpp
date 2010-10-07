@@ -20,10 +20,12 @@ Node::Node()
 //Destructor
 Node::~Node()
 {
+	this->children->clear();
 	delete this->children;
 	delete this->scale;
 	delete this->rotate;
 	delete this->translate;
+	delete this;
 }
 
 //Add a child
