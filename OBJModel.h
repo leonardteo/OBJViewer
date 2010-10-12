@@ -19,7 +19,7 @@ To DO:
 #include <stdio.h>
 #include <string>
 
-#ifdef OSX
+#ifdef __APPLE__
 	#include <OpenGL/gl.h>
 	#include <OpenGL/glu.h>
 	#include <GLUT/GLUT.h>
@@ -54,6 +54,7 @@ public:
 
 	//Draw the polygons using OpenGL calls
 	void draw();
+	void drawArray();
 	
 	//Scene graph rendering call
 	void render();
@@ -79,7 +80,7 @@ private:
 	int** index;			//2 dimensional arrays: Note these are pointers so that we can do this: this->normals_index[i][j]
 	int** normalsIndex;
 	int** uvIndex;
-
+	
 	//Texture map
 	MyBitmap* image;
 	GLuint texture;

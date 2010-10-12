@@ -11,6 +11,7 @@
 
 #include <vector>
 #include "Vector3.h"
+#include <string>
 using namespace std;
 
 enum NodeType {
@@ -23,8 +24,10 @@ public:
 
 	//Data Members
 	NodeType type;				//The type of node this is
-	vector<Node*>* children;		//Child nodes
-
+	vector<Node*>* children;	//Child nodes
+	Node* parent;				//The node's parent
+	string id;					//The node's ID so that we can search for a node
+	
 	//Local Transforms
 	Vector3* scale;				//Local scaling	
 	Vector3* rotate;			//Local rotation on x, y, z axes
@@ -34,6 +37,7 @@ public:
 	Node();
 	~Node();
 	void addChild(Node*);
+	void setParent(Node*);
 	virtual void render();
 	
 private:

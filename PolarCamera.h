@@ -17,7 +17,7 @@ public:
 	float twist;				//Roll
 	float elevation;			//Pitch
 	float azimuth;				//Heading
-	float distance;			//Distance from point of interest
+	float distance;				//Distance from point of interest
 	float fov;					//Field of View
 	float near_plane;			//Near clipping plane
 	float far_plane;			//Far clipping plane

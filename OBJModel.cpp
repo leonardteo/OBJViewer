@@ -252,7 +252,6 @@ void OBJModel::render()
 	
 }
 
-
 /**
 Drawing routine
 **/

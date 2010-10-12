@@ -5,7 +5,7 @@ OBJ Viewer
 #include <iostream>
 #include <string>
 
-#ifdef OSX
+#ifdef __APPLE__
 	#include <OpenGL/gl.h>
 	#include <OpenGL/glu.h>
 	#include <GLUT/GLUT.h>
@@ -18,6 +18,7 @@ OBJ Viewer
 #include "OBJModel.h"
 #include "MyBitmap.h"
 #include "Node.h"
+#include "Transform.h"
 
 using namespace std;
 
@@ -612,20 +613,13 @@ static void init()
 	humveehardtop->translate->x = 15.0f;
 	
 	//Scene Graph
-	rootNode = uhtiger;
-	rootNode->addChild(humveehardtop);
-	rootNode->addChild(m1abrams);
-	
-	//objmodel = new OBJModel("C:\\mayaprojects\\GameEngineTests\\scenes\\quakeplasma.obj");
-	//objmodel = new OBJModel("C:\\mayaprojects\\GameEngineTests\\scenes\\uhtiger.obj");
-	//objmodel = new OBJModel("C:\\mayaprojects\\GameEngineTests\\scenes\\humveehardtop.obj");
-	//objmodel = new OBJModel("C:\\mayaprojects\\GameEngineTests\\scenes\\ussoldier1.obj");
-
-	//load_texture("C:\\mayaprojects\\GameEngineTests\\sourceimages\\M1_ABRAM.bmp");
-	//load_texture("C:\\mayaprojects\\GameEngineTests\\sourceimages\\plasma.bmp");
-	//load_texture("C:\\mayaprojects\\GameEngineTests\\sourceimages\\uhtiger.bmp");
-	//load_texture("C:\\mayaprojects\\GameEngineTests\\sourceimages\\humveehardtop.bmp");
-	//load_texture("C:\\mayaprojects\\GameEngineTests\\sourceimages\\ussoldier01.bmp");
+	rootNode = new Node();
+	Transform* translatetest1 = new Transform(ROTATE);
+	translatetest1->rotate->y = 45.0f;
+	rootNode->addChild(translatetest1);
+	translatetest1->addChild(uhtiger);
+	translatetest1->addChild(humveehardtop);
+	translatetest1->addChild(m1abrams);
 
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 

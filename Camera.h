@@ -7,6 +7,9 @@
  *
  */
 
+#ifndef CAMERA_H
+#define CAMERA_H
+
 #include "Node.h"
 
 enum CameraProjection {
@@ -17,7 +20,12 @@ enum CameraType {
 	POLAR, FIRSTPERSON
 };
 
-class Camera: public Node 
+
+/**
+ * Camera class extends Node
+ */
+
+class Camera : public Node 
 {
 public:
 	
@@ -30,3 +38,5 @@ public:
 	~Camera();
 	
 };
+
+#endif

@@ -11,6 +11,8 @@
 
 Camera::Camera()
 {
+	//Set node type
+	this->type = CAMERA;
 }
 
 Camera::~Camera()

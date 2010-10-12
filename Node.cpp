@@ -15,6 +15,7 @@ Node::Node()
 	this->scale = new Vector3();
 	this->rotate = new Vector3();
 	this->translate = new Vector3();
+	this->id = "";			//Blank ID?
 }
 
 //Destructor
@@ -31,9 +32,25 @@ Node::~Node()
 //Add a child
 void Node::addChild(Node* child)
 {
+	//Set the child node's parent as this one
+	child->setParent(this);
+	
+	//Add the child node
 	this->children->push_back(child);
+
 }
 
-void Node::render()
+//Set the parent
+void Node::setParent(Node* parent)
 {
-};
+	this->parent = parent;
+}
+
+//Abstract method for rendering - must be overloaded by child classes
+void Node::render()
+{	
+	for (int i=0; i<this->children->size(); i++)
+	{
+		this->children->at(i)->render();
+	}
+}
