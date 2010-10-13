@@ -7,8 +7,8 @@
  *
  */
 
-#ifndef CAMERA_H
-#define CAMERA_H
+#ifndef CAMERANODE_H
+#define CAMERANODE_H
 
 #include "Node.h"
 
@@ -25,7 +25,7 @@ enum CameraType {
  * Camera class extends Node
  */
 
-class Camera : public Node 
+class CameraNode : public Node 
 {
 public:
 	
@@ -34,8 +34,8 @@ public:
 	CameraType cameraType;
 	
 	//Constructor/Destructor
-	Camera();
-	~Camera();
+	CameraNode();
+	~CameraNode();
 	
 };
 

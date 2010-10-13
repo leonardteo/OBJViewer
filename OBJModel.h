@@ -80,7 +80,13 @@ private:
 	int** index;			//2 dimensional arrays: Note these are pointers so that we can do this: this->normals_index[i][j]
 	int** normalsIndex;
 	int** uvIndex;
-	
+
+	GLfloat* vertexArray;	
+	GLfloat* normalsArray;
+	GLfloat* uvArray;
+
+	GLuint* indexArray; //Straight line array
+
 	//Texture map
 	MyBitmap* image;
 	GLuint texture;
@@ -91,6 +97,9 @@ private:
 	//Load a model file
 	void load(const char* fileName);
 
+	//Prepare arrays
+	void prepArrays();
+	void debugArrays();
 };
 
 #endif

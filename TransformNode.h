@@ -1,14 +1,14 @@
 /*
- *  Transform.h
- *  OBJViewer
+ *  TransformNode
  *
- *  Created by Leonard Teo on 10-10-10.
+ *	Scene Graph node for handling transformations
+ *
  *  Copyright 2010 Leonard Teo. All rights reserved.
  *
  */
 
-#ifndef TRANSFORM_H
-#define TRANSFORM_H
+#ifndef TRANSFORMNODE_H
+#define TRANSFORMNODE_H
 
 #include "Node.h"
 
@@ -23,7 +23,7 @@ enum TransformType {
 	TRANSLATE, SCALE, ROTATE
 };	
 
-class Transform : public Node 
+class TransformNode : public Node 
 {
 	
 public:
@@ -31,8 +31,8 @@ public:
 	TransformType transformType;
 	
 	//Methods
-	Transform(enum TransformType);
-	~Transform();
+	TransformNode(enum TransformType);
+	~TransformNode();
 	void render();
 	
 };

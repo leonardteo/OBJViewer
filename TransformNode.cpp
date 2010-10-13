@@ -1,26 +1,26 @@
 /*
- *  Transform.cpp
- *  OBJViewer
+ *  TransformNode.cpp
+ *  Scene graph node for handling transformations
  *
  *  Created by Leonard Teo on 10-10-10.
  *  Copyright 2010 Leonard Teo. All rights reserved.
  *
  */
 
-#include "Transform.h"
+#include "TransformNode.h"
 
-Transform::Transform(TransformType transformType)
+TransformNode::TransformNode(TransformType transformType)
 {
 	this->type = TRANSFORM;
 	this->transformType = transformType;
 }
 
-Transform::~Transform()
+TransformNode::~TransformNode()
 {
 }
 
 //Do all translations then render child nodes
-void Transform::render()
+void TransformNode::render()
 {
 	//Remember where we are
 	glPushMatrix();

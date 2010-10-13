@@ -18,7 +18,7 @@ OBJ Viewer
 #include "OBJModel.h"
 #include "MyBitmap.h"
 #include "Node.h"
-#include "Transform.h"
+#include "TransformNode.h"
 
 using namespace std;
 
@@ -135,36 +135,6 @@ static void draw_models()
 	//Draw using scene graph
 	rootNode->render();
 	
-	//Draw all three models (let's be awesome)
-	/*
-	glPushMatrix();
-		glTranslatef(-15, 0, 0);
-		m1abrams->draw();
-	glPopMatrix();
-
-	uhtiger->draw();
-
-	glPushMatrix();
-		glTranslatef(15,0,0);
-		humveehardtop->draw();
-	glPopMatrix();
-	 */
-
-	//Switch model
-	/*
-	switch (model)
-	{
-	case 0:
-		m1abrams->draw();
-		break;
-	case 1:
-		humveehardtop->draw();
-		break;
-	case 2:
-		uhtiger->draw();
-		break;
-	}
-	*/
 }
 
 /**
@@ -598,6 +568,7 @@ static void init()
 {
 	
 	//Load models
+	
 	uhtiger = new OBJModel("models/uhtiger.obj");
 	uhtiger->loadTexture("textures/uhtiger.bmp");
 	uhtiger->translate->z = 5.0f;
@@ -614,12 +585,19 @@ static void init()
 	
 	//Scene Graph
 	rootNode = new Node();
-	Transform* translatetest1 = new Transform(ROTATE);
+	TransformNode* translatetest1 = new TransformNode(ROTATE);
 	translatetest1->rotate->y = 45.0f;
 	rootNode->addChild(translatetest1);
 	translatetest1->addChild(uhtiger);
 	translatetest1->addChild(humveehardtop);
 	translatetest1->addChild(m1abrams);
+	
+	/*
+	rootNode = new Node();
+	OBJModel* cube = new OBJModel("models/pipe.obj");
+	rootNode->addChild(cube);
+
+	*/
 
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 

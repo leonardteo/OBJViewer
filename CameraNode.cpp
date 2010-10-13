@@ -7,14 +7,14 @@
  *
  */
 
-#include "Camera.h"
+#include "CameraNode.h"
 
-Camera::Camera()
+CameraNode::CameraNode()
 {
 	//Set node type
 	this->type = CAMERA;
 }
 
-Camera::~Camera()
+CameraNode::~CameraNode()
 {
 }
