@@ -18,3 +18,9 @@ Vector3::~Vector3(void)
 {
 	delete this;
 }
+
+//Overloaded << operator
+std::ostream& operator<<(std::ostream& output, const Vector3* v) {
+	output << "(" <<  v->x << ", " << v->y <<", " << v->z << ")";
+    return output;  // for multiple << operators.
+}

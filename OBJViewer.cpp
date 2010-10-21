@@ -2,8 +2,12 @@
 OBJ Viewer
 **/
 
+//STD libraries
 #include <iostream>
 #include <string>
+
+//OpenGL libraries
+#include <GL/glew.h>
 
 #ifdef __APPLE__
 	#include <OpenGL/gl.h>
@@ -13,12 +17,16 @@ OBJ Viewer
 	#include <GL/glut.h>
 #endif
 
-
-#include "PolarCamera.h"
+//Engine libraries
 #include "OBJModel.h"
 #include "MyBitmap.h"
 #include "Node.h"
 #include "TransformNode.h"
+#include "PolyMeshNode.h"
+#include "Texture.h"
+#include "Vector3.h"
+
+#include "PolarCamera.h"
 
 using namespace std;
 
@@ -85,6 +93,13 @@ static GLuint texName;
 //Scene Graph
 Node* rootNode;
 
+//Calculating fps
+int frame = 0, time, timebase=0;
+float fps=0.0f;
+int font=(int)GLUT_BITMAP_8_BY_13;
+char s[30];
+
+
 /**
 Draw a 24x24 grid
 **/
@@ -136,6 +151,41 @@ static void draw_models()
 	rootNode->render();
 	
 }
+
+void drawText(char* string)
+{
+	char* p;
+	for (p=string; *p; p++)
+	{
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, *p);
+	}
+}
+
+/**
+Calculate and display FPS
+**/
+static void profiler()
+{
+	glDisable(GL_TEXTURE_2D);
+
+	//Calculate FPS
+	frame++;
+	time = glutGet(GLUT_ELAPSED_TIME);
+	
+	if ((time - timebase) > 1000) {
+		sprintf(s,"FPS: %4.2f", frame*1000.0/(time-timebase));
+	 	timebase = time;
+		frame = 0;
+	}
+
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glWindowPos2i(5, 5);
+	
+	drawText(s);
+	glEnable(GL_TEXTURE_2D);
+
+}
+
 
 /**
 Display function
@@ -209,6 +259,8 @@ static void display()
 		glEnable(GL_TEXTURE_2D);
 		glEnable(GL_CULL_FACE);
 	}
+
+	profiler();
 
 	glutSwapBuffers();
 
@@ -539,27 +591,20 @@ static void lighting()
 	glEnable(GL_DEPTH_TEST);
 }
 
-//Load Texture
-static void load_texture(char* filename)
+
+
+
+/**
+Do this while idle 
+Calculate fps
+**/
+static void idleFunc()
 {
-	texture = new MyBitmap(filename);
-	if (!texture->loaded){
-		cout << "Could not load texture." << endl;
-		exit(0);
-	}
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glGenTextures(1, &texName);				//Allocate Texture Name
-	glBindTexture(GL_TEXTURE_2D, texName);	//Select current texture
 
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
-	
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texture->width, texture->height, 0, GL_RGB, GL_UNSIGNED_BYTE, texture->data);
-	glEnable( GL_TEXTURE_2D );
-	
 
-	delete texture;
+
 }
+
 
 /**
 Clear out the screen
@@ -568,36 +613,56 @@ static void init()
 {
 	
 	//Load models
-	
+	/*
 	uhtiger = new OBJModel("models/uhtiger.obj");
-	uhtiger->loadTexture("textures/uhtiger.bmp");
-	uhtiger->translate->z = 5.0f;
+	PolyMeshNode* uhTigerNode = new PolyMeshNode();
+	uhTigerNode->attachModel(uhtiger);
+	Texture* uhTigerTexture = new Texture("textures/uhtiger.bmp");
+	uhTigerNode->attachTexture(uhTigerTexture);
+	uhTigerNode->translate->z = 5.0f;
+	*/
 
 	m1abrams = new OBJModel("models/m1abrams.obj");
-	m1abrams->loadTexture("textures/M1_ABRAM.bmp");
-	m1abrams->translate->z = -5.0f;
-	m1abrams->translate->x = -15.0f;
+	PolyMeshNode* m1AbramsNode = new PolyMeshNode();
+	m1AbramsNode->attachModel(m1abrams);
+	Texture* m1AbramsTexture = new Texture("textures/M1_ABRAM.bmp");
+	m1AbramsNode->attachTexture(m1AbramsTexture);
+	m1AbramsNode->translate->z = -5.0f;
+	m1AbramsNode->translate->x = -15.0f;
 
+	/*
 	humveehardtop = new OBJModel("models/humveehardtop.obj");
-	humveehardtop->loadTexture("textures/humveehardtop.bmp");
-	humveehardtop->translate->z = -5.0f;
-	humveehardtop->translate->x = 15.0f;
+	PolyMeshNode* humveeNode = new PolyMeshNode();
+	humveeNode->attachModel(humveehardtop);
+	Texture* humveeTexture = new Texture("textures/humveehardtop.bmp");
+	humveeNode->attachTexture(humveeTexture);
+	humveeNode->translate->z = -5.0f;
+	humveeNode->translate->x = 15.0f;
+	*/
 	
 	//Scene Graph
 	rootNode = new Node();
-	TransformNode* translatetest1 = new TransformNode(ROTATE);
-	translatetest1->rotate->y = 45.0f;
-	rootNode->addChild(translatetest1);
-	translatetest1->addChild(uhtiger);
-	translatetest1->addChild(humveehardtop);
-	translatetest1->addChild(m1abrams);
-	
 	/*
-	rootNode = new Node();
-	OBJModel* cube = new OBJModel("models/pipe.obj");
-	rootNode->addChild(cube);
-
+	TransformNode* translatetest1 = new TransformNode(ROTATE);
+	translatetest1->rotate->y = 45;
+	rootNode->addChild(translatetest1);
+	translatetest1->addChild(uhTigerNode);
+	translatetest1->addChild(m1AbramsNode);
+	translatetest1->addChild(humveeNode);
 	*/
+
+	//10 tanks
+	for (int x=-10; x<=10; x++)
+	{
+		for (int z=-10; z<=10; z++)
+		{
+			TransformNode* transform = new TransformNode(TRANSLATE);
+			transform->translate->x = x*20;
+			transform->translate->z = z*20;
+			transform->addChild(m1AbramsNode);
+			rootNode->addChild(transform);
+		}
+	}
 
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 
@@ -618,6 +683,8 @@ static void init()
 
 	//Backface culling
 	glEnable(GL_CULL_FACE);
+
+	glEnable(GL_TEXTURE_2D);
 
 }
 
@@ -653,6 +720,17 @@ int main(int argc, char** argv)
 	glutInitWindowSize(640, 480);
 	glutInitWindowPosition(100, 100);
 	glutCreateWindow("OBJViewer Test - Leonard Teo");
+
+	//Initialize GLEW
+	GLenum err = glewInit();
+	if (GLEW_OK != err)
+	{
+		/* Problem: glewInit failed, something is seriously wrong. */
+		fprintf(stderr, "Error: %s\n", glewGetErrorString(err));
+		exit(1);
+	}
+	fprintf(stdout, "Status: Using GLEW %s\n", glewGetString(GLEW_VERSION));
+
 	init();
 	glutDisplayFunc(display);
 	glutReshapeFunc(reshape);
@@ -660,20 +738,12 @@ int main(int argc, char** argv)
 	glutSpecialFunc(functionKeys);
 	glutMouseFunc(mouse_clicks);
 	glutMotionFunc(mouse_move);
+	glutIdleFunc(display);	//Set idle function to force refresh
 
 	glutMainLoop();
 
 	//Cleanup
-	/*
-	delete lightcycle_chassis;
-	delete lightcycle_canopy;
-	delete lightcycle_axel_front_right;
-	delete lightcycle_axel_front_left;
-	delete lightcycle_wheel_front_right;
-	delete lightcycle_wheel_front_left;
-	delete lightcycle_wheel_rear_right;
-	delete lightcycle_wheel_rear_left;
-	*/
+
 	delete camera;
 
 	exit(0);

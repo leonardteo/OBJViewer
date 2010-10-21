@@ -30,10 +30,6 @@ OBJModel::~OBJModel(void)
 //General class initialization
 void OBJModel::init()
 {
-	//Set node type
-	this->type = POLYMESH;	
-	this->hasTexture = false;
-
 	this->numVertices = 0;
 	this->numFaces = 0;
 	this->numUVs = 0;
@@ -50,6 +46,12 @@ void OBJModel::init()
 	this->normalsArray = NULL;
 	this->uvArray = NULL;
 	this->indexArray = NULL;
+
+	//VBO
+	this->vbo_vertices = 0;
+	this->vbo_normals = 0;
+	this->vbo_uvs = 0;
+	this->vbo_index = 0;
 }
 
 /**
@@ -107,6 +109,7 @@ void OBJModel::load(const char* fileName)
 		} //end of file
 
 		//Echo the stats
+		printf("Loading OBJ file\n");
 		printf("fileName: %s \n", fileName);
 		printf("Vertices: %d \n", this->numVertices);
 		printf("Vertex Normals: %d \n", this->numNormals);
@@ -298,6 +301,40 @@ void OBJModel::prepArrays()
 	delete [] this->uvIndex;
 
 	//this->debugArrays();
+
+	//Check vertex buffer object extension
+	if (glewGetExtension("GL_ARB_vertex_buffer_object"))
+	{
+		cout << "Vertex buffer objects supported!" << endl;
+		
+		//Load vertices
+		glGenBuffers(1, &this->vbo_vertices);	//Get name/ID
+		glBindBuffer(GL_ARRAY_BUFFER, this->vbo_vertices);	//Bind the buffer to the name
+		glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*this->numFaces*3*3, this->vertexArray, GL_STATIC_DRAW);
+
+		//Load normals
+		glGenBuffers(1, &this->vbo_normals);	//Get name/ID
+		glBindBuffer(GL_ARRAY_BUFFER, this->vbo_normals);	//Bind the buffer to the name
+		glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*this->numFaces*3*3, this->normalsArray, GL_STATIC_DRAW);
+
+		//Load UVs
+		glGenBuffers(1, &this->vbo_uvs);	//Get name/ID
+		glBindBuffer(GL_ARRAY_BUFFER, this->vbo_uvs);	//Bind the buffer to the name
+		glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*this->numFaces*3*2, this->uvArray, GL_STATIC_DRAW);
+
+		//Load index
+		glGenBuffers(1, &this->vbo_index);	//Get name/ID
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->vbo_index);	//Bind the buffer to the name
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*this->numFaces*3, this->indexArray, GL_STATIC_DRAW_ARB);
+		
+		//Clear bind buffers
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+		cout << "Loaded model into GPU memory" << endl;
+		
+	}
+	
 }
 
 //Show all the array data
@@ -339,136 +376,3 @@ void OBJModel::debugArrays()
 	fclose(file);
 }
 
-
-/**
-Overloaded scene graph render routine
-**/
-void OBJModel::render()
-{
-	for (int i=0; i < this->children->size(); i++)
-	{
-		this->children->at(i)->render();
-	}
-	
-	//Draw this
-	glPushMatrix();
-		glTranslatef((GLfloat)this->translate->x, (GLfloat)this->translate->y, (GLfloat)this->translate->z);
-		this->draw();
-	glPopMatrix();
-	
-}
-
-/**
-Drawing routine
-**/
-void OBJModel::draw()
-{
-	//Load texture
-	if (this->hasTexture)
-	{
-		glBindTexture(GL_TEXTURE_2D, this->texture);
-	}
-		
-	//Drawing with vertex arrays
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_NORMAL_ARRAY);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-
-	glVertexPointer(3, GL_FLOAT, 0, this->vertexArray);
-	glNormalPointer(GL_FLOAT, 0, this->normalsArray);
-	glTexCoordPointer(2, GL_FLOAT, 0, this->uvArray);
-
-	glDrawElements(GL_TRIANGLES, 3*this->numFaces, GL_UNSIGNED_INT, this->indexArray);
-
-	glDisableClientState(GL_VERTEX_ARRAY);
-	glDisableClientState(GL_NORMAL_ARRAY);
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	
-	//For each face, draw a Triangle
-	
-	/*
-
-	//Old immediate mode drawing code
-
-	glBegin(GL_TRIANGLES);
-	for (int face = 0; face < this->numFaces; face++)
-	{
-
-		//Draw the vertex at each of the vertex numbders
-		glTexCoord2f((GLfloat)this->uvs[this->uvIndex[face][0]]->u, (GLfloat)this->uvs[this->uvIndex[face][0]]->v);
-		glNormal3f((GLfloat)this->normals[this->normalsIndex[face][0]]->x, (GLfloat)this->normals[this->normalsIndex[face][0]]->y, (GLfloat)this->normals[this->normalsIndex[face][0]]->z);
-		glVertex3f((GLfloat)this->vertices[this->index[face][0]]->x, (GLfloat)this->vertices[this->index[face][0]]->y, (GLfloat)this->vertices[this->index[face][0]]->z);
-
-		glTexCoord2f((GLfloat)this->uvs[this->uvIndex[face][1]]->u, (GLfloat)this->uvs[this->uvIndex[face][1]]->v);
-		glNormal3f((GLfloat)this->normals[this->normalsIndex[face][1]]->x, (GLfloat)this->normals[this->normalsIndex[face][1]]->y, (GLfloat)this->normals[this->normalsIndex[face][1]]->z);
-		glVertex3f((GLfloat)this->vertices[this->index[face][1]]->x, (GLfloat)this->vertices[this->index[face][1]]->y, (GLfloat)this->vertices[this->index[face][1]]->z);
-
-		glTexCoord2f((GLfloat)this->uvs[this->uvIndex[face][2]]->u, (GLfloat)this->uvs[this->uvIndex[face][2]]->v);
-		glNormal3f((GLfloat)this->normals[this->normalsIndex[face][2]]->x, (GLfloat)this->normals[this->normalsIndex[face][2]]->y, (GLfloat)this->normals[this->normalsIndex[face][2]]->z);
-		glVertex3f((GLfloat)this->vertices[this->index[face][2]]->x, (GLfloat)this->vertices[this->index[face][2]]->y, (GLfloat)this->vertices[this->index[face][2]]->z);
-
-		/* Non-Optimized code for debugging
-		//Get vertex numbers
-		int v1, v2, v3;
-		v1 = this->index[face][0];
-		v2 = this->index[face][1];
-		v3 = this->index[face][2];
-
-		//Get Normal numbers
-		int n1, n2, n3;
-		n1 = this->normalsIndex[face][0];
-		n2 = this->normalsIndex[face][1];
-		n3 = this->normalsIndex[face][2];
-
-		//Get UVs
-		int uv1, uv2, uv3;
-		uv1 = this->uvIndex[face][0];
-		uv2 = this->uvIndex[face][1];
-		uv3 = this->uvIndex[face][2];
-
-		//Draw the vertex at each of the vertex numbders
-		glTexCoord2f((GLfloat)this->uvs[uv1]->u, (GLfloat)this->uvs[uv1]->v);
-		glNormal3f((GLfloat)this->normals[n1]->x, (GLfloat)this->normals[n1]->y, (GLfloat)this->normals[n1]->z);
-		glVertex3f((GLfloat)this->vertices[v1]->x, (GLfloat)this->vertices[v1]->y, (GLfloat)this->vertices[v1]->z);
-
-		glTexCoord2f((GLfloat)this->uvs[uv2]->u, (GLfloat)this->uvs[uv2]->v);
-		glNormal3f((GLfloat)this->normals[n2]->x, (GLfloat)this->normals[n2]->y, (GLfloat)this->normals[n2]->z);
-		glVertex3f((GLfloat)this->vertices[v2]->x, (GLfloat)this->vertices[v2]->y, (GLfloat)this->vertices[v2]->z);
-
-		glTexCoord2f((GLfloat)this->uvs[uv3]->u, (GLfloat)this->uvs[uv3]->v);
-		glNormal3f((GLfloat)this->normals[n3]->x, (GLfloat)this->normals[n3]->y, (GLfloat)this->normals[n3]->z);
-		glVertex3f((GLfloat)this->vertices[v3]->x, (GLfloat)this->vertices[v3]->y, (GLfloat)this->vertices[v3]->z);
-		*/
-	/*
-	}
-	glEnd();
-	*/
-
-	glFlush();
-}
-
-/***
-Load Texture
-***/
-void OBJModel::loadTexture(const char* fileName)
-{
-	this->image = new MyBitmap(fileName);
-	if (!image->loaded){
-		cout << "Could not load texture." << endl;
-		exit(0);
-	}
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glGenTextures(1, &this->texture);				//Allocate Texture Name
-	glBindTexture(GL_TEXTURE_2D, this->texture);	//Select current texture
-
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
-	
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, this->image->width, this->image->height, 0, GL_RGB, GL_UNSIGNED_BYTE, this->image->data);
-	this->hasTexture = true;
-	
-	glEnable(GL_TEXTURE_2D);
-	
-
-	delete image;
-}

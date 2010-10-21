@@ -9,7 +9,7 @@ PolarCamera::PolarCamera(void)
 	this->twist = 0;
 	this->distance = 15;
 	this->near_plane = 0.1f;
-	this->far_plane = 100;
+	this->far_plane = 500.0f;
 	this->fov = 45;
 	this->perspective_mode = true;
 	this->ortho_zoom = 2;

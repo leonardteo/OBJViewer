@@ -18,6 +18,10 @@ To DO:
 #include <fstream>
 #include <stdio.h>
 #include <string>
+#include <vector>
+
+//OpenGL libraries
+#include <GL/glew.h>
 
 #ifdef __APPLE__
 	#include <OpenGL/gl.h>
@@ -27,10 +31,8 @@ To DO:
 	#include <GL/glut.h>
 #endif
 
+//Teapot Engine Libraries
 #include "Vector3.h"
-#include "MyBitmap.h"
-#include "Node.h"
-#include <vector>
 
 using namespace std;
 
@@ -40,24 +42,17 @@ struct UV
 	float v;
 };
 
-class OBJModel: public Node
+class OBJModel
 {
+
+friend class PolyMeshNode;	//Make sure that PolyMeshNode can access all data in this class
+
 public:
 	//Constructor
 	OBJModel(const char* fileName);
 
 	//Destructor
 	~OBJModel(void);
-
-	//Load Texture
-	void loadTexture(const char* fileName);
-
-	//Draw the polygons using OpenGL calls
-	void draw();
-	void drawArray();
-	
-	//Scene graph rendering call
-	void render();
 
 	//Generate normals - TO DO
 	void generateNormals();
@@ -71,8 +66,6 @@ private:
 	int numUVs;
 	int numNormals;
 	
-	bool hasTexture;
-
 	//Data
 	Vector3** vertices;
 	Vector3** normals;
@@ -87,9 +80,11 @@ private:
 
 	GLuint* indexArray; //Straight line array
 
-	//Texture map
-	MyBitmap* image;
-	GLuint texture;
+	//Vertex buffer object IDs
+	GLuint vbo_vertices;
+	GLuint vbo_normals;
+	GLuint vbo_uvs;
+	GLuint vbo_index;
 
 	//Initialize the arrays and variables
 	void init();
@@ -100,6 +95,8 @@ private:
 	//Prepare arrays
 	void prepArrays();
 	void debugArrays();
+
+	
 };
 
 #endif
