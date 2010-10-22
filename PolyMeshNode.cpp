@@ -9,7 +9,7 @@
 #include "PolyMeshNode.h"
 
 //Constructor
-PolyMeshNode::PolyMeshNode()
+PolyMeshNode::PolyMeshNode() : Node()
 {
 	this->mesh = NULL;
 	this->texture = NULL;
@@ -153,14 +153,28 @@ void PolyMeshNode::draw()
 
 void PolyMeshNode::render()
 {
-	for (int i=0; i < this->children->size(); i++)
-	{
-		this->children->at(i)->render();
-	}
+
 	
 	//Draw this
 	glPushMatrix();
 		glTranslatef((GLfloat)this->translate->x, (GLfloat)this->translate->y, (GLfloat)this->translate->z);
+
+		//This piece of code is not good because the order of rotation is actually important. 
+		//We need to figure out a way to rotate an entire local coordinate system.
+		//This should be relatively simple but we'll need to figure it out... 
+		glRotatef((GLfloat)this->rotate->z, (GLfloat)0.0f, (GLfloat)0.0f, (GLfloat)1.0f);
+		glRotatef((GLfloat)this->rotate->y, (GLfloat)0.0f, (GLfloat)1.0f, (GLfloat)0.0f);
+		glRotatef((GLfloat)this->rotate->x, (GLfloat)1.0f, (GLfloat)0.0f, (GLfloat)0.0f);
+
+		glScalef((GLfloat)this->scale->x, (GLfloat)this->scale->y, (GLfloat)this->scale->z);
+		
 		this->draw();
+
+		//Draw children
+		for (int i=0; i < this->children->size(); i++)
+		{
+			this->children->at(i)->render();
+		}
+
 	glPopMatrix();	
 }

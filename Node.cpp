@@ -11,8 +11,9 @@
 //Constructor
 Node::Node()
 {
+	this->parent = NULL;
 	this->children = new vector<Node*>;
-	this->scale = new Vector3();
+	this->scale = new Vector3(1.0f, 1.0f, 1.0f);
 	this->rotate = new Vector3();
 	this->translate = new Vector3();
 	this->id = "";			//Blank ID?
@@ -52,5 +53,20 @@ void Node::render()
 	for (int i=0; i<this->children->size(); i++)
 	{
 		this->children->at(i)->render();
+	}
+}
+
+//Abstract method for doing view transformations
+void Node::viewTransform()
+{
+	//To do: Make this rotate on a local, orthonormal basis
+	glRotatef(-this->rotate->z, 0.0f, 0.0f, 1.0f);	//Roll
+	glRotatef(-this->rotate->y, 0.0f, 1.0f, 0.0f);	//Pitch
+	glRotatef(-this->rotate->x, 1.0f, 0.0f, 0.0f);	//Heading
+	glTranslatef(-this->translate->x, -this->translate->y, -this->translate->z);
+
+	if (this->parent != NULL)
+	{
+		this->parent->viewTransform();
 	}
 }

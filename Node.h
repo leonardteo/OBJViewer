@@ -10,8 +10,20 @@
 #define NODE_H
 
 #include <vector>
-#include "Vector3.h"
 #include <string>
+
+#include <GL/glew.h>
+
+#ifdef __APPLE__
+	#include <OpenGL/gl.h>
+	#include <OpenGL/glu.h>
+	#include <GLUT/GLUT.h>
+#else
+	#include <GL/glut.h>
+#endif
+
+#include "Vector3.h"
+
 using namespace std;
 
 enum NodeType {
@@ -39,8 +51,7 @@ public:
 	void addChild(Node*);
 	void setParent(Node*);
 	virtual void render();
-	
-private:
+	virtual void viewTransform();
 	
 };
 

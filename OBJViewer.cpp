@@ -25,6 +25,7 @@ OBJ Viewer
 #include "PolyMeshNode.h"
 #include "Texture.h"
 #include "Vector3.h"
+#include "CameraNode.h"
 
 #include "PolarCamera.h"
 
@@ -63,6 +64,9 @@ bool shaded_mode = true;
 //Camera - Polar view
 PolarCamera* camera = new PolarCamera();
 
+//Scene Graph Camera
+CameraNode* sgCamera;
+
 //Temporary variables to facilitate Polar camera
 float azimuth_change = 0;
 float twist_change = 0;
@@ -79,12 +83,7 @@ float pan_y_change = 0;
 //Orthographic zooming temporary variable
 float ortho_zoom_change = 0;
 
-//OBJ Models
-//OBJModel* objmodel;	//Any objmodel for testing
 
-OBJModel* m1abrams;
-OBJModel* humveehardtop;
-OBJModel* uhtiger;
 
 //Texture
 MyBitmap* texture;
@@ -99,6 +98,9 @@ float fps=0.0f;
 int font=(int)GLUT_BITMAP_8_BY_13;
 char s[30];
 
+
+//For testing
+PolyMeshNode* humveeNode;
 
 /**
 Draw a 24x24 grid
@@ -128,6 +130,7 @@ static void grid(int scale = 1)
 	glEnd();
 
 	//Make sure the lines at the origin are nice and different
+	/*
 	glBegin(GL_LINES);
 		glColor3f(0.75, 0.75, 0.75);
 		glVertex3f(0, 0, (GLfloat)(-12*scale));
@@ -135,6 +138,49 @@ static void grid(int scale = 1)
 		glVertex3f((GLfloat)(-12*scale), 0, 0);
 		glVertex3f((GLfloat)(12*scale), 0, 0);
 	glEnd();
+	*/
+
+	//Draw axis
+	glBegin(GL_LINES);
+		//x axis should be red and pointing to positive x
+		glColor3f(1.0, 0.0, 0.0);
+		glVertex3f(0.0, 0.0, 0.0);
+		glVertex3f(12*scale, 0.0, 0.0);
+	glEnd();
+
+	//Draw cone
+	glPushMatrix();
+		glTranslatef(12*scale, 0.0, 0.0);
+		glRotatef(90, 0.0, 1.0, 0.0);
+		glutSolidCone(0.2, 0.75, 8, 3);
+	glPopMatrix();
+
+	glBegin(GL_LINES);
+		//y axis
+		glColor3f(0.0, 1.0, 0.0);
+		glVertex3f(0.0, 0.0, 0.0);
+		glVertex3f(0.0, 12*scale, 0.0);
+	glEnd();
+
+	//Draw cone
+	glPushMatrix();
+		glTranslatef(0.0, 12*scale, 0.0);
+		glRotatef(-90, 1.0, 0.0, 0.0);
+		glutSolidCone(0.2, 0.75, 8, 3);
+	glPopMatrix();
+
+	glBegin(GL_LINES);
+		//z axis
+		glColor3f(0.0, 0.0, 1.0);
+		glVertex3f(0.0, 0.0, 0.0);
+		glVertex3f(0.0, 0.0, 12*scale);
+	glEnd();	
+
+	//Draw cone
+	glPushMatrix();
+		glTranslatef(0.0, 0.0, 12*scale);
+		glutSolidCone(0.2, 0.75, 8, 3);
+	glPopMatrix();
 
 	glFlush();
 
@@ -169,13 +215,17 @@ static void profiler()
 	glDisable(GL_TEXTURE_2D);
 
 	//Calculate FPS
-	frame++;
-	time = glutGet(GLUT_ELAPSED_TIME);
-	
-	if ((time - timebase) > 1000) {
-		sprintf(s,"FPS: %4.2f", frame*1000.0/(time-timebase));
-	 	timebase = time;
-		frame = 0;
+	frame++;	//Increment number of frames
+	time = glutGet(GLUT_ELAPSED_TIME);	//Get current time
+
+	//Time is current time, timebase is last time since we took a benchmark
+	if ((time - timebase) > 500) {	//Do this every x milliseconds
+		
+		float fps = 1000* (float)frame / (float)(time-timebase);
+		sprintf(s,"FPS: %4.2f", fps );
+	 	
+		timebase = time;	//Set timebase to current time
+		frame = 0;	//Reset number of frames
 	}
 
 	glColor3f(1.0f, 1.0f, 1.0f);
@@ -198,14 +248,20 @@ static void display()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
+	//Call scene graph camera
+	sgCamera->viewTransform();
+
 	/**
 	Camera setup
 	**/
+	
 	//Translate & Rotate Polar Views
+	/*
 	glTranslatef(-(GLfloat)(camera->point_of_interest->x + pan_x_change), (GLfloat)(camera->point_of_interest->y + pan_y_change), -((GLfloat)camera->distance + (GLfloat)cam_distance_change));		//Translate along the z axis away from camera
 	glRotatef((GLfloat)camera->twist + (GLfloat)twist_change, (GLfloat)0.0, (GLfloat)0.0, (GLfloat)1.0);							//Rotate around z axis (usually by 0)
 	glRotatef((GLfloat)camera->elevation + (GLfloat)elevation_change, (GLfloat)1.0, (GLfloat)0.0, (GLfloat)0.0);					//Rotate around x axis
 	glRotatef((GLfloat)camera->azimuth + (GLfloat)azimuth_change, (GLfloat)0.0, (GLfloat)1.0, (GLfloat)0.0);						//Rotate around y axis
+	*/
 
 	//Draw grid
 	grid();
@@ -271,6 +327,8 @@ Sets the projection
 **/
 static void set_projection()
 {
+	sgCamera->setProjection(width, height);
+	/*
 	glViewport(0, 0, (GLsizei) width, (GLsizei) height);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -297,6 +355,7 @@ static void set_projection()
 		}
 		glOrtho(left, right, bottom, top, -camera->far_plane, camera->far_plane);
 	}
+	*/
 }
 
 /**
@@ -309,6 +368,7 @@ static void reshape(int new_width, int new_height)
 	height = new_height;
 
 	set_projection();
+	//sgCamera->setProjection(width, height);
 }
 
 /** 
@@ -347,9 +407,11 @@ static void keyboard_func(unsigned char key, int mx, int my)
 	//Views
 	case 'c':	//Reset views
 		//Destroy and reinitialize camera
+		/*
 		delete camera;
 		camera = new PolarCamera();
 		set_projection();
+		*/
 		break;
 
 	case 'w':	//Show Wireframe
@@ -460,12 +522,11 @@ static void mouse_clicks(int button, int state, int mx, int my)
 			left_mouse_down = false;
 
 			//Add changes to camera
-			camera->azimuth += azimuth_change;
-			camera->elevation += elevation_change;
+			sgCamera->azimuth += sgCamera->azimuth_offset;
+			sgCamera->elevation += sgCamera->elevation_offset;
+			sgCamera->azimuth_offset = 0.0f;
+			sgCamera->elevation_offset = 0.0f;
 			
-			//Reset deltas
-			azimuth_change = 0;
-			elevation_change = 0;
 		}
 		break;
 	
@@ -480,6 +541,10 @@ static void mouse_clicks(int button, int state, int mx, int my)
 		} else {
 			right_mouse_down = false;
 			
+			//Reset camera distance offset
+			sgCamera->distance += sgCamera->distance_offset;
+			sgCamera->distance_offset = 0.0f;
+
 			//Reset distance deltas
 			camera->distance += cam_distance_change;
 			cam_distance_change = 0;
@@ -500,6 +565,10 @@ static void mouse_clicks(int button, int state, int mx, int my)
 
 		} else {
 			middle_mouse_down = false;
+
+			sgCamera->panX += sgCamera->panX_offset; sgCamera->panX_offset = 0.0f;
+			sgCamera->panY += sgCamera->panY_offset; sgCamera->panY_offset = 0.0f;
+			
 
 			//Reset panning deltas
 			camera->point_of_interest->x += pan_x_change;
@@ -524,13 +593,23 @@ static void mouse_move(int mx, int my)
 
 	//Left Mouse Button - Orbit
 	if (left_mouse_down){
-		azimuth_change = - (float(mouse_down_x) - float(mx)) / float(width) * 90;
-		elevation_change = - (float(mouse_down_y) - float(my)) / float(height) * 90;
+
+		sgCamera->azimuth_offset = -(float(mouse_down_x) - float(mx)) / float(width) * 90;
+		sgCamera->elevation_offset = -(float(mouse_down_y) - float(my)) / float(height) * 90;
+
 	}
 
 	//Right Mouse Button - Dolly
 	if (right_mouse_down){
 		
+		if (sgCamera->perspectiveMode)
+		{
+			sgCamera->distance_offset = (float(mouse_down_x) - float(mx)) / float(width) * 10;
+		} else {
+			sgCamera->distance_offset = (float(mouse_down_x) - float(mx)) / float(width);
+			sgCamera->setProjection(width, height);
+		}
+
 		if (camera->perspective_mode){
 			cam_distance_change = (float(mouse_down_x) - float(mx)) / float(width) * 10;
 		} else {
@@ -542,8 +621,8 @@ static void mouse_move(int mx, int my)
 	//Middle Mouse Button - Panning
 	if (middle_mouse_down){
 
-		pan_x_change = (float(mouse_down_x) - float(mx)) / float(width) * 5;
-		pan_y_change = (float(mouse_down_y) - float(my)) / float(height) * 5;
+		sgCamera->panX_offset = (float(mouse_down_x) - float(mx)) / float(width) * 5;
+		sgCamera->panY_offset = -(float(mouse_down_y) - float(my)) / float(height) * 5;
 		
 	}
 
@@ -592,26 +671,17 @@ static void lighting()
 }
 
 
-
-
-/**
-Do this while idle 
-Calculate fps
-**/
-static void idleFunc()
-{
-
-
-
-}
-
-
 /**
 Clear out the screen
 **/
 static void init()
 {
-	
+	//Backface culling
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_TEXTURE_2D);
+
+	glClearColor(0.0, 0.0, 0.0, 0.0);
+
 	//Load models
 	/*
 	uhtiger = new OBJModel("models/uhtiger.obj");
@@ -620,7 +690,6 @@ static void init()
 	Texture* uhTigerTexture = new Texture("textures/uhtiger.bmp");
 	uhTigerNode->attachTexture(uhTigerTexture);
 	uhTigerNode->translate->z = 5.0f;
-	*/
 
 	m1abrams = new OBJModel("models/m1abrams.obj");
 	PolyMeshNode* m1AbramsNode = new PolyMeshNode();
@@ -629,29 +698,34 @@ static void init()
 	m1AbramsNode->attachTexture(m1AbramsTexture);
 	m1AbramsNode->translate->z = -5.0f;
 	m1AbramsNode->translate->x = -15.0f;
+	*/
 
-	/*
-	humveehardtop = new OBJModel("models/humveehardtop.obj");
-	PolyMeshNode* humveeNode = new PolyMeshNode();
+	OBJModel* humveehardtop = new OBJModel("models/humveehardtop.obj");
+	humveeNode = new PolyMeshNode();
 	humveeNode->attachModel(humveehardtop);
 	Texture* humveeTexture = new Texture("textures/humveehardtop.bmp");
 	humveeNode->attachTexture(humveeTexture);
-	humveeNode->translate->z = -5.0f;
-	humveeNode->translate->x = 15.0f;
-	*/
-	
+	humveeNode->rotate->y = -90;
+
+	PolyMeshNode* humveeNode2 = new PolyMeshNode();
+	humveeNode2->attachModel(humveehardtop);
+	humveeNode2->attachTexture(humveeTexture);
+	humveeNode2->translate->x = -20;
+	humveeNode2->rotate->y = 90;
+
+	PolyMeshNode* humveeNode3 = new PolyMeshNode();
+	humveeNode3->attachModel(humveehardtop);
+	humveeNode3->attachTexture(humveeTexture);
+	humveeNode3->translate->x = -20;
+
 	//Scene Graph
 	rootNode = new Node();
-	/*
-	TransformNode* translatetest1 = new TransformNode(ROTATE);
-	translatetest1->rotate->y = 45;
-	rootNode->addChild(translatetest1);
-	translatetest1->addChild(uhTigerNode);
-	translatetest1->addChild(m1AbramsNode);
-	translatetest1->addChild(humveeNode);
-	*/
+	rootNode->addChild(humveeNode);
+	humveeNode->addChild(humveeNode2);
+	humveeNode2->addChild(humveeNode3);
 
 	//10 tanks
+	/*
 	for (int x=-10; x<=10; x++)
 	{
 		for (int z=-10; z<=10; z++)
@@ -663,8 +737,21 @@ static void init()
 			rootNode->addChild(transform);
 		}
 	}
+	*/
 
-	glClearColor(0.0, 0.0, 0.0, 0.0);
+	//Create a camera and attach to root node
+	sgCamera = new CameraNode(FIRSTPERSON);
+	sgCamera->translate->x = -10.0f;
+	sgCamera->translate->z = 10.0f;
+	sgCamera->translate->y = 2.0f;
+	sgCamera->rotate->y = 45;
+	//rootNode->addChild(sgCamera);
+
+	sgCamera = new CameraNode(POLAR);
+	sgCamera->distance = 30.0f;
+	sgCamera->azimuth = -180.0f;
+	sgCamera->elevation = 40.0f;
+	humveeNode3->addChild(sgCamera);
 
 	//Set up lighting
 	lighting();
@@ -681,10 +768,7 @@ static void init()
 	glLineWidth (1);
 	*/
 
-	//Backface culling
-	glEnable(GL_CULL_FACE);
 
-	glEnable(GL_TEXTURE_2D);
 
 }
 
