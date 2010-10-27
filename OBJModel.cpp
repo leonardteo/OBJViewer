@@ -109,12 +109,14 @@ void OBJModel::load(const char* fileName)
 		} //end of file
 
 		//Echo the stats
+		/*
 		printf("Loading OBJ file\n");
 		printf("fileName: %s \n", fileName);
 		printf("Vertices: %d \n", this->numVertices);
 		printf("Vertex Normals: %d \n", this->numNormals);
 		printf("Faces: %d \n", this->numFaces);
 		printf("\n");
+		*/
 
 		//Allocate memory for data
 
@@ -305,7 +307,7 @@ void OBJModel::prepArrays()
 	//Check vertex buffer object extension
 	if (glewGetExtension("GL_ARB_vertex_buffer_object"))
 	{
-		cout << "Vertex buffer objects supported!" << endl;
+		//cout << "Vertex buffer objects supported!" << endl;
 		
 		//Load vertices
 		glGenBuffers(1, &this->vbo_vertices);	//Get name/ID
@@ -331,7 +333,7 @@ void OBJModel::prepArrays()
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-		cout << "Loaded model into GPU memory" << endl;
+		//cout << "Loaded model into GPU memory" << endl;
 		
 	}
 	

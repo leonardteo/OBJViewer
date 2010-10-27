@@ -33,7 +33,7 @@ public:
 	//Methods
 	TransformNode(enum TransformType);
 	~TransformNode();
-	void render();
+	void render(RenderType renderType = ALL_OBJECTS);
 	
 };
 

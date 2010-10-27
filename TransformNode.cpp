@@ -20,7 +20,7 @@ TransformNode::~TransformNode()
 }
 
 //Do all translations then render child nodes
-void TransformNode::render()
+void TransformNode::render(enum RenderType renderType)
 {
 	//Remember where we are
 	glPushMatrix();
@@ -42,7 +42,7 @@ void TransformNode::render()
 	
 	for (int i=0; i<this->children->size(); i++)
 	{
-		this->children->at(i)->render();
+		this->children->at(i)->render(renderType);
 	}
 	
 	glPopMatrix();	

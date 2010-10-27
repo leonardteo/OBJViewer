@@ -30,6 +30,10 @@ enum NodeType {
 	POLYMESH, CAMERA, LIGHT, TRANSFORM
 };
 
+enum RenderType {
+	OPAQUE_OBJECTS, TRANSPARENT_OBJECTS, ALL_OBJECTS
+};
+
 class Node
 {
 public:
@@ -50,7 +54,8 @@ public:
 	~Node();
 	void addChild(Node*);
 	void setParent(Node*);
-	virtual void render();
+	void setTranslation(float x, float y, float z);
+	virtual void render(RenderType renderType = ALL_OBJECTS);
 	virtual void viewTransform();
 	
 };

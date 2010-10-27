@@ -58,6 +58,11 @@ public:
 	float panX;					//Used for panning the camera
 	float panY;
 
+	//Orthographic camera
+	float orthoZoom;			//The orthographic zoom factor
+
+	bool perspectiveMode;		//Switch between perspective and ortho
+
 	//Third person offsets - used for controlling mouse movements where you don't want to write directly to the twist, elevation, azimuth
 	float twist_offset;
 	float elevation_offset;
@@ -65,17 +70,12 @@ public:
 	float distance_offset;
 	float panX_offset;
 	float panY_offset;
-
+	float orthoZoom_offset;		//Used for handling mouse in and out
 
 	//Projection settings
 	float fov;					//Field of View
 	float nearPlane;			//Near clipping plane
 	float farPlane;			//Far clipping plane
-
-	bool perspectiveMode;		//Switch between perspective and ortho
-
-	//Ortho
-	float orthoZoom;			//The orthographic zoom factor
 
 	//Methods
 	void setProjection(int width, int height);

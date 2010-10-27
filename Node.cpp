@@ -22,7 +22,7 @@ Node::Node()
 //Destructor
 Node::~Node()
 {
-	this->children->clear();
+	this->children->clear();	//Clear the vector
 	delete this->children;
 	delete this->scale;
 	delete this->rotate;
@@ -48,25 +48,33 @@ void Node::setParent(Node* parent)
 }
 
 //Abstract method for rendering - must be overloaded by child classes
-void Node::render()
+void Node::render(RenderType renderType)
 {	
 	for (int i=0; i<this->children->size(); i++)
 	{
-		this->children->at(i)->render();
+		this->children->at(i)->render(renderType);
 	}
 }
 
 //Abstract method for doing view transformations
 void Node::viewTransform()
 {
-	//To do: Make this rotate on a local, orthonormal basis
+	//Transform view according to local node orientation
 	glRotatef(-this->rotate->z, 0.0f, 0.0f, 1.0f);	//Roll
-	glRotatef(-this->rotate->y, 0.0f, 1.0f, 0.0f);	//Pitch
-	glRotatef(-this->rotate->x, 1.0f, 0.0f, 0.0f);	//Heading
+	glRotatef(-this->rotate->y, 0.0f, 1.0f, 0.0f);	//Heading	
+	glRotatef(-this->rotate->x, 1.0f, 0.0f, 0.0f);	//Pitch
+	
 	glTranslatef(-this->translate->x, -this->translate->y, -this->translate->z);
 
 	if (this->parent != NULL)
 	{
 		this->parent->viewTransform();
 	}
+}
+
+void Node::setTranslation(float x, float y, float z)
+{
+	this->translate->x = x;
+	this->translate->y = y; 
+	this->translate->z = z;
 }

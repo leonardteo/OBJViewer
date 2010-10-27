@@ -13,6 +13,7 @@ PolyMeshNode::PolyMeshNode() : Node()
 {
 	this->mesh = NULL;
 	this->texture = NULL;
+	this->material = NULL;
 }
 
 //Destructor
@@ -35,6 +36,12 @@ void PolyMeshNode::attachTexture(Texture* texture)
 	this->texture = texture;
 }
 
+//Attach material
+void PolyMeshNode::attachMaterial(Material* material)
+{
+	this->material = material;
+}
+
 void PolyMeshNode::draw()
 {
 
@@ -42,6 +49,15 @@ void PolyMeshNode::draw()
 	if (this->texture != NULL)
 	{
 		glBindTexture(GL_TEXTURE_2D, this->texture->textureID);
+	}
+
+	//Load material
+	if (this->material != NULL)
+	{
+		glMaterialfv(GL_FRONT, GL_AMBIENT, this->material->ambient);
+		glMaterialfv(GL_FRONT, GL_DIFFUSE, this->material->diffuse);
+		glMaterialfv(GL_FRONT, GL_SPECULAR, this->material->specular);
+		glMaterialfv(GL_FRONT, GL_SHININESS, this->material->shininess);
 	}
 
 	//Check vertex buffer object extension
@@ -151,29 +167,63 @@ void PolyMeshNode::draw()
 
 }
 
-void PolyMeshNode::render()
+void PolyMeshNode::render(enum RenderType renderType)
 {
 
 	
 	//Draw this
 	glPushMatrix();
-		glTranslatef((GLfloat)this->translate->x, (GLfloat)this->translate->y, (GLfloat)this->translate->z);
+		glTranslatef(this->translate->x, this->translate->y, this->translate->z);
 
 		//This piece of code is not good because the order of rotation is actually important. 
 		//We need to figure out a way to rotate an entire local coordinate system.
 		//This should be relatively simple but we'll need to figure it out... 
-		glRotatef((GLfloat)this->rotate->z, (GLfloat)0.0f, (GLfloat)0.0f, (GLfloat)1.0f);
-		glRotatef((GLfloat)this->rotate->y, (GLfloat)0.0f, (GLfloat)1.0f, (GLfloat)0.0f);
-		glRotatef((GLfloat)this->rotate->x, (GLfloat)1.0f, (GLfloat)0.0f, (GLfloat)0.0f);
+		glRotatef(this->rotate->z, 0.0f, 0.0f, 1.0f);
+		glRotatef(this->rotate->y, 0.0f, 1.0f, 0.0f);
+		glRotatef(this->rotate->x, 1.0f, 0.0f, 0.0f);
 
-		glScalef((GLfloat)this->scale->x, (GLfloat)this->scale->y, (GLfloat)this->scale->z);
+		glScalef(this->scale->x, this->scale->y, this->scale->z);
+
+		//Drawing
+
+		//Figure out if this is an opaque or transparent object, and draw appropriately
+		if (renderType == ALL_OBJECTS)
+		{
+			this->draw();
+		} else {
+			if (this->material != NULL)
+			{
+			//Check material
+			if (this->material->diffuse[3] < 1.0f || this->material->ambient[3] < 1.0f)
+			{
+				//If there is transparency
+
+				//Check the render type. If transparent, draw
+				if (renderType == TRANSPARENT_OBJECTS)
+				{
+					this->draw();
+				}
+			} else {
+				//If there is no transparency
+				if (renderType == OPAQUE_OBJECTS)
+				{
+					this->draw();
+				}
+			}
+
+			} else {
+			//No material -- assume that it is opaque, so draw
+			this->draw();
+			}
+
+		}
 		
-		this->draw();
+		
 
 		//Draw children
 		for (int i=0; i < this->children->size(); i++)
 		{
-			this->children->at(i)->render();
+			this->children->at(i)->render(renderType);
 		}
 
 	glPopMatrix();	

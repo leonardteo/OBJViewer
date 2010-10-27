@@ -16,7 +16,6 @@ Vector3::Vector3(float nx, float ny, float nz)
 
 Vector3::~Vector3(void)
 {
-	delete this;
 }
 
 //Overloaded << operator

@@ -12,6 +12,7 @@
 #include "Node.h"
 #include "OBJModel.h"
 #include "Texture.h"
+#include "Material.h"
 
 #include <GL\glew.h>
 
@@ -39,15 +40,18 @@ public:
 	//Attach texture
 	void attachTexture(Texture* texture);
 
+	void attachMaterial(Material* material);
+
 	//Draw the polygons using OpenGL calls
 	void draw();
 	
 	//Scene graph rendering call
-	void render();
+	void render(RenderType renderType = ALL_OBJECTS);
 
 	//Data members
 	OBJModel* mesh;
 	Texture* texture;
+	Material* material;
 
 };
 

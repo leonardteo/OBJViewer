@@ -61,9 +61,6 @@ int model = 0;
 bool show_wireframe = false;
 bool shaded_mode = true;
 
-//Camera - Polar view
-PolarCamera* camera = new PolarCamera();
-
 //Scene Graph Camera
 CameraNode* sgCamera;
 
@@ -82,8 +79,6 @@ float pan_y_change = 0;
 
 //Orthographic zooming temporary variable
 float ortho_zoom_change = 0;
-
-
 
 //Texture
 MyBitmap* texture;
@@ -251,18 +246,6 @@ static void display()
 	//Call scene graph camera
 	sgCamera->viewTransform();
 
-	/**
-	Camera setup
-	**/
-	
-	//Translate & Rotate Polar Views
-	/*
-	glTranslatef(-(GLfloat)(camera->point_of_interest->x + pan_x_change), (GLfloat)(camera->point_of_interest->y + pan_y_change), -((GLfloat)camera->distance + (GLfloat)cam_distance_change));		//Translate along the z axis away from camera
-	glRotatef((GLfloat)camera->twist + (GLfloat)twist_change, (GLfloat)0.0, (GLfloat)0.0, (GLfloat)1.0);							//Rotate around z axis (usually by 0)
-	glRotatef((GLfloat)camera->elevation + (GLfloat)elevation_change, (GLfloat)1.0, (GLfloat)0.0, (GLfloat)0.0);					//Rotate around x axis
-	glRotatef((GLfloat)camera->azimuth + (GLfloat)azimuth_change, (GLfloat)0.0, (GLfloat)1.0, (GLfloat)0.0);						//Rotate around y axis
-	*/
-
 	//Draw grid
 	grid();
 
@@ -327,35 +310,9 @@ Sets the projection
 **/
 static void set_projection()
 {
+	glViewport(0, 0, width, height);
 	sgCamera->setProjection(width, height);
-	/*
-	glViewport(0, 0, (GLsizei) width, (GLsizei) height);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
 
-	//Perspective mode or ortho
-	float aspect_ratio = (float)width / (float)height;
-	if (camera->perspective_mode){
-		gluPerspective(camera->fov, GLfloat(aspect_ratio), camera->near_plane, camera->far_plane);
-	} else {
-		//Keep aspect ratio
-		float left, right, bottom, top, temp_ortho_zoom;
-		temp_ortho_zoom = camera->ortho_zoom + ortho_zoom_change;
-
-		if (aspect_ratio < 1.0){
-			left = -temp_ortho_zoom;
-			right = temp_ortho_zoom;
-			bottom = -temp_ortho_zoom * ( 1.0f / aspect_ratio );
-			top = temp_ortho_zoom * ( 1.0f / aspect_ratio );
-		} else {
-			left = -temp_ortho_zoom * aspect_ratio;
-			right = temp_ortho_zoom * aspect_ratio;
-			bottom = -temp_ortho_zoom;
-			top = temp_ortho_zoom;
-		}
-		glOrtho(left, right, bottom, top, -camera->far_plane, camera->far_plane);
-	}
-	*/
 }
 
 /**
@@ -378,40 +335,11 @@ static void keyboard_func(unsigned char key, int mx, int my)
 {
 	switch (key)
 	{
-	//Camera Motion for Assignment
-	case 'u':
-		camera->point_of_interest->y -= 0.02f;
-		glutPostRedisplay();
-		break;
-	case 'd':
-		camera->point_of_interest->y += 0.02f;
-		glutPostRedisplay();
-		break;
-	case 'l':
-		camera->point_of_interest->x -= 0.02f;
-		glutPostRedisplay();
-		break;
-	case 'r':
-		camera->point_of_interest->x += 0.02f;
-		glutPostRedisplay();
-		break;
-	case 'f':
-		camera->distance -= 0.2f;
-		glutPostRedisplay();
-		break;
-	case 'b':
-		camera->distance += 0.2f;
-		glutPostRedisplay();
-		break;
 	
 	//Views
 	case 'c':	//Reset views
 		//Destroy and reinitialize camera
-		/*
-		delete camera;
-		camera = new PolarCamera();
-		set_projection();
-		*/
+		
 		break;
 
 	case 'w':	//Show Wireframe
@@ -421,72 +349,31 @@ static void keyboard_func(unsigned char key, int mx, int my)
 		shaded_mode = shaded_mode == false ? true : false;
 		break;
 	case 'p':	//Perspective
-		camera->perspective_mode = true;
+		sgCamera->perspectiveMode = true;
 		set_projection();
 		break;
 	case 'o':	//Ortho
-		camera->perspective_mode = false;
-		set_projection();
-		break;
-	case 'z':	//Zoom forward
-		if (camera->perspective_mode){
-			camera->fov -= 1.5f;
-		} else {
-			camera->ortho_zoom -= 0.1f;
-		}
-		set_projection();
-		break;
-	case 'Z':	//Zoom back
-		if (camera->perspective_mode){
-			camera->fov += 1.5f;
-		} else {
-			camera->ortho_zoom += 0.1f;
-		}
+		sgCamera->perspectiveMode = false;
 		set_projection();
 		break;
 
+
 	//Alternative zoom
 	case '+':	//Zoom forward
-		if (camera->perspective_mode){
-			camera->fov -= 1.5f;
+		if (sgCamera->perspectiveMode){
+			sgCamera->fov -= 1.5f;
 		} else {
-			camera->ortho_zoom -= 0.1f;
+			sgCamera->orthoZoom -= 0.1f;
 		}
 		set_projection();
 		break;
 	case '-':	//Zoom back
-		if (camera->perspective_mode){
-			camera->fov += 1.5f;
+		if (sgCamera->perspectiveMode){
+			sgCamera->fov += 1.5f;
 		} else {
-			camera->ortho_zoom += 0.1f;
+			sgCamera->orthoZoom += 0.1f;
 		}
 		set_projection();
-		break;
-
-	//Models
-	case '1':
-		model = 0;
-		break;
-	case '2':
-		model = 1;
-		break;
-	case '3':
-		model = 2;
-		break;
-	case '4':
-		model = 3;
-		break;
-	case '5':
-		model = 4;
-		break;
-	case '6':
-		model = 5;
-		break;
-	case '7':
-		model = 6;
-		break;
-	case '8':
-		model = 7;
 		break;
 
 	//Exit
@@ -544,13 +431,9 @@ static void mouse_clicks(int button, int state, int mx, int my)
 			//Reset camera distance offset
 			sgCamera->distance += sgCamera->distance_offset;
 			sgCamera->distance_offset = 0.0f;
-
-			//Reset distance deltas
-			camera->distance += cam_distance_change;
-			cam_distance_change = 0;
 			
 			//Ortho
-			camera->ortho_zoom += ortho_zoom_change;
+			sgCamera->orthoZoom += ortho_zoom_change;
 			ortho_zoom_change = 0;
 			
 		}
@@ -568,13 +451,7 @@ static void mouse_clicks(int button, int state, int mx, int my)
 
 			sgCamera->panX += sgCamera->panX_offset; sgCamera->panX_offset = 0.0f;
 			sgCamera->panY += sgCamera->panY_offset; sgCamera->panY_offset = 0.0f;
-			
 
-			//Reset panning deltas
-			camera->point_of_interest->x += pan_x_change;
-			camera->point_of_interest->y += pan_y_change;
-			pan_x_change = 0;
-			pan_y_change = 0;
 			
 		}
 		break;
@@ -610,12 +487,6 @@ static void mouse_move(int mx, int my)
 			sgCamera->setProjection(width, height);
 		}
 
-		if (camera->perspective_mode){
-			cam_distance_change = (float(mouse_down_x) - float(mx)) / float(width) * 10;
-		} else {
-			ortho_zoom_change = (float(mouse_down_x) - float(mx)) / float(width);
-			set_projection();
-		}
 	}
 
 	//Middle Mouse Button - Panning
@@ -683,22 +554,22 @@ static void init()
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 
 	//Load models
-	/*
-	uhtiger = new OBJModel("models/uhtiger.obj");
+	
+	OBJModel* uhtiger = new OBJModel("models/uhtiger.obj");
 	PolyMeshNode* uhTigerNode = new PolyMeshNode();
 	uhTigerNode->attachModel(uhtiger);
 	Texture* uhTigerTexture = new Texture("textures/uhtiger.bmp");
 	uhTigerNode->attachTexture(uhTigerTexture);
 	uhTigerNode->translate->z = 5.0f;
 
-	m1abrams = new OBJModel("models/m1abrams.obj");
+	OBJModel* m1abrams = new OBJModel("models/m1abrams.obj");
 	PolyMeshNode* m1AbramsNode = new PolyMeshNode();
 	m1AbramsNode->attachModel(m1abrams);
 	Texture* m1AbramsTexture = new Texture("textures/M1_ABRAM.bmp");
 	m1AbramsNode->attachTexture(m1AbramsTexture);
 	m1AbramsNode->translate->z = -5.0f;
 	m1AbramsNode->translate->x = -15.0f;
-	*/
+	
 
 	OBJModel* humveehardtop = new OBJModel("models/humveehardtop.obj");
 	humveeNode = new PolyMeshNode();
@@ -707,28 +578,15 @@ static void init()
 	humveeNode->attachTexture(humveeTexture);
 	humveeNode->rotate->y = -90;
 
-	PolyMeshNode* humveeNode2 = new PolyMeshNode();
-	humveeNode2->attachModel(humveehardtop);
-	humveeNode2->attachTexture(humveeTexture);
-	humveeNode2->translate->x = -20;
-	humveeNode2->rotate->y = 90;
-
-	PolyMeshNode* humveeNode3 = new PolyMeshNode();
-	humveeNode3->attachModel(humveehardtop);
-	humveeNode3->attachTexture(humveeTexture);
-	humveeNode3->translate->x = -20;
 
 	//Scene Graph
 	rootNode = new Node();
-	rootNode->addChild(humveeNode);
-	humveeNode->addChild(humveeNode2);
-	humveeNode2->addChild(humveeNode3);
 
-	//10 tanks
-	/*
-	for (int x=-10; x<=10; x++)
+	//121 tanks
+
+	for (int x=-10; x<10; x++)
 	{
-		for (int z=-10; z<=10; z++)
+		for (int z=-10; z<10; z++)
 		{
 			TransformNode* transform = new TransformNode(TRANSLATE);
 			transform->translate->x = x*20;
@@ -737,27 +595,19 @@ static void init()
 			rootNode->addChild(transform);
 		}
 	}
-	*/
-
-	//Create a camera and attach to root node
-	sgCamera = new CameraNode(FIRSTPERSON);
-	sgCamera->translate->x = -10.0f;
-	sgCamera->translate->z = 10.0f;
-	sgCamera->translate->y = 2.0f;
-	sgCamera->rotate->y = 45;
-	//rootNode->addChild(sgCamera);
+	
 
 	sgCamera = new CameraNode(POLAR);
 	sgCamera->distance = 30.0f;
-	sgCamera->azimuth = -180.0f;
+	sgCamera->azimuth = 0.0f;
 	sgCamera->elevation = 40.0f;
-	humveeNode3->addChild(sgCamera);
+	
 
 	//Set up lighting
 	lighting();
 
 	//Anti-Aliasing
-	/*
+	
 	glEnable (GL_LINE_SMOOTH);
 	glEnable(GL_POLYGON_SMOOTH);
 
@@ -766,7 +616,7 @@ static void init()
 	glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
 	glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
 	glLineWidth (1);
-	*/
+	
 
 
 
@@ -825,10 +675,6 @@ int main(int argc, char** argv)
 	glutIdleFunc(display);	//Set idle function to force refresh
 
 	glutMainLoop();
-
-	//Cleanup
-
-	delete camera;
 
 	exit(0);
 
