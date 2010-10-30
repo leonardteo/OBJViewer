@@ -14,13 +14,13 @@
 #include "Texture.h"
 #include "Material.h"
 
-#include <GL\glew.h>
-
 #ifdef __APPLE__
+	#include <GLEW/GLEW.h>
 	#include <OpenGL/gl.h>
 	#include <OpenGL/glu.h>
 	#include <GLUT/GLUT.h>
 #else
+	#include <GL/glew.h>
 	#include <GL/glut.h>
 #endif
 

@@ -7,13 +7,13 @@ OBJ Viewer
 #include <string>
 
 //OpenGL libraries
-#include <GL/glew.h>
-
 #ifdef __APPLE__
+	#include <GLEW/GLEW.h>
 	#include <OpenGL/gl.h>
 	#include <OpenGL/glu.h>
 	#include <GLUT/GLUT.h>
 #else
+	#include <GL/glew.h>
 	#include <GL/glut.h>
 #endif
 
@@ -80,17 +80,14 @@ float pan_y_change = 0;
 //Orthographic zooming temporary variable
 float ortho_zoom_change = 0;
 
-//Texture
-MyBitmap* texture;
-static GLuint texName;
-
 //Scene Graph
 Node* rootNode;
 
 //Calculating fps
-int frame = 0, time, timebase=0;
+int frame = 0;
+int currenttime = 0;
+int timebase=0;
 float fps=0.0f;
-int font=(int)GLUT_BITMAP_8_BY_13;
 char s[30];
 
 
@@ -211,15 +208,15 @@ static void profiler()
 
 	//Calculate FPS
 	frame++;	//Increment number of frames
-	time = glutGet(GLUT_ELAPSED_TIME);	//Get current time
+	currenttime = glutGet(GLUT_ELAPSED_TIME);	//Get current time
 
 	//Time is current time, timebase is last time since we took a benchmark
-	if ((time - timebase) > 500) {	//Do this every x milliseconds
+	if ((currenttime - timebase) > 500) {	//Do this every x milliseconds
 		
-		float fps = 1000* (float)frame / (float)(time-timebase);
+		float fps = 1000* (float)frame / (float)(currenttime-timebase);
 		sprintf(s,"FPS: %4.2f", fps );
 	 	
-		timebase = time;	//Set timebase to current time
+		timebase = currenttime;	//Set timebase to current time
 		frame = 0;	//Reset number of frames
 	}
 
