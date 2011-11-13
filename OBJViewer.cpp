@@ -552,26 +552,26 @@ static void init()
 
 	//Load models
 	
-	OBJModel* uhtiger = new OBJModel("models/uhtiger.obj");
+	OBJModel* uhtiger = new OBJModel("/Users/leonardteo/Documents/UniProjects/OBJViewer/models/uhtiger.obj");
 	PolyMeshNode* uhTigerNode = new PolyMeshNode();
 	uhTigerNode->attachModel(uhtiger);
-	Texture* uhTigerTexture = new Texture("textures/uhtiger.bmp");
+	Texture* uhTigerTexture = new Texture("/Users/leonardteo/Documents/UniProjects/OBJViewer/textures/uhtiger.bmp");
 	uhTigerNode->attachTexture(uhTigerTexture);
 	uhTigerNode->translate->z = 5.0f;
 
-	OBJModel* m1abrams = new OBJModel("models/m1abrams.obj");
+	OBJModel* m1abrams = new OBJModel("/Users/leonardteo/Documents/UniProjects/OBJViewer/models/m1abrams.obj");
 	PolyMeshNode* m1AbramsNode = new PolyMeshNode();
 	m1AbramsNode->attachModel(m1abrams);
-	Texture* m1AbramsTexture = new Texture("textures/M1_ABRAM.bmp");
+	Texture* m1AbramsTexture = new Texture("/Users/leonardteo/Documents/UniProjects/OBJViewer/textures/M1_ABRAM.bmp");
 	m1AbramsNode->attachTexture(m1AbramsTexture);
 	m1AbramsNode->translate->z = -5.0f;
 	m1AbramsNode->translate->x = -15.0f;
 	
 
-	OBJModel* humveehardtop = new OBJModel("models/humveehardtop.obj");
+	OBJModel* humveehardtop = new OBJModel("/Users/leonardteo/Documents/UniProjects/OBJViewer/models/humveehardtop.obj");
 	humveeNode = new PolyMeshNode();
 	humveeNode->attachModel(humveehardtop);
-	Texture* humveeTexture = new Texture("textures/humveehardtop.bmp");
+	Texture* humveeTexture = new Texture("/Users/leonardteo/Documents/UniProjects/OBJViewer/textures/humveehardtop.bmp");
 	humveeNode->attachTexture(humveeTexture);
 	humveeNode->rotate->y = -90;
 
